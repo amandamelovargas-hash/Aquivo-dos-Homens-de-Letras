@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquivo dos Homens de Letras - Supernatural Blog</title>
+    <style>
+        /* Configurações Gerais e Tema Escuro Avançado */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace, sans-serif;
+        }
+
+        body {
+            background-color: #08090c;
+            color: #d1d5db;
+            background-image: 
+                radial-gradient(circle at 20% 30%, #1a0f0f 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, #0f141c 0%, transparent 40%);
+            background-attachment: fixed;
+            padding-bottom: 60px;
+        }
+
+        /* Barra de Alerta Dinâmica */
+        .ticker-wrap {
+            background: #ff3333;
+            color: #000;
+            font-weight: bold;
+            padding: 8px 0;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 2px 15px rgba(255, 51, 51, 0.4);
+            animation: pulseAlert 2s infinite;
+        }
+
+        @keyframes pulseAlert {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Cabeçalho */
+        header {
+            background-color: #030406;
+            border-bottom: 3px double #ff3333;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "✦ ✦ ✦";
+            display: block;
+            color: #444;
+            letter-spacing: 10px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            text-shadow: 0 0 10px #ff3333, 0 0 30px #ff3333;
+            animation: neonFlicker 4s infinite alternate;
+        }
+
+        header p {
+            color: #a0aec0;
+            margin-top: 15px;
+            font-size: 1.1rem;
+            font-style: italic;
+            letter-spacing: 1px;
+        }
+
+        @keyframes neonFlicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                text-shadow: 0 0 8px #ff3333, 0 0 20px #ff3333, 0 0 40px #b30000;
+            }
+            20%, 24%, 55% {        
+                text-shadow: none;
+                color: #2d3748;
+            }
+        }
+
+        /* Layout em Grade */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 40px;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Seção de Artigos */
+        main {
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+        }
+
+        article {
+            background: linear-gradient(145deg, #11141d, #0b0d14);
+            border: 1px solid #1f2433;
+            border-radius: 12px;
+            padding: 30px;
+            display: flex;
+            gap: 25px;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        article:hover {
+            transform: translateY(-8px) scale(1.01);
+            border-color: #ff3333;
+            box-shadow: 0 15px 30px rgba(255, 51, 51, 0.15);
+        }
+
+        .post-icon {
+            width: 90px;
+            height: 90px;
+            background-color: #171b26;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            border: 2px solid #2d3748;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        article:hover .post-icon {
+            transform: rotate(-10deg) scale(1.1);
+            border-color: #ff3333;
+        }
+
+        .post-content {
+            flex-grow: 1;
+        }
+
+        h2 {
+            color: #ffffff;
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .artigo-meta {
+            font-size: 0.85rem;
+            color: #ff3333;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .post-content p {
+            color: #a0aec0;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        /* Botões Interativos */
+        .actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        button {
+            background-color: #171b26;
+            color: #cbd5e1;
+            border: 1px solid #2d3748;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #222938;
+            border-color: #4a5568;
+        }
+
+        button.active[data-type="like"] {
+            background-color: #b30000;
+            border-color: #ff3333;
+            color: #fff;
+            box-shadow: 0 0 10px rgba(255, 51, 51, 0.4);
+        }
+
+        button.active[data-type="fav"] {
+            background-color: #d69e2e;
+            border-color: #ecc94b;
+            color: #000;
+            box-shadow: 0 0 10px rgba(236, 201, 75, 0.4);
+        }
+
+        /* Barra Lateral */
+        aside {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .widget {
+            background-color: #0b0d14;
+            border: 1px solid #1f2433;
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .widget h3 {
+            color: #fff;
+            font-size: 1.2rem;
+            border-bottom: 2px solid #ff3333;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .widget ul {
+            list-style: none;
+        }
+
+        .widget ul li {
+            padding: 10px 0;
+            border-bottom: 1px dashed #1f2433;
+            font-size: 0.9rem;
+            color: #a0aec0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .widget ul li a {
+            color: #ff3333;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .widget ul li a:hover {
+            text-decoration: underline;
+        }
+
+        /* Elemento Flutuante Linkado (Impala) */
+        .impala-link {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #000;
+            border: 2px solid #ff3333;
+            color: white;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 0 20px rgba(255, 51, 51, 0.6);
+            cursor: pointer;
+            z-index: 1000;
+            text-decoration: none;
+            animation: floatVessel 4s ease-in-out infinite;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .impala-link:hover {
+            transform: scale(1.15);
+            background-color: #ff3333;
+        }
+
+        @keyframes floatVessel {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(5deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ticker-wrap">
+        ⚠️ Alerta Vermelho: Sinais de atividade de Poltergeist detectados em Lawrence, Kansas. Fiquem atentos! ⚠️
+    </div>
+
+    <a href="https://www.youtube.com/watch?v=2X_2IdYBTV0" target="_blank" class="impala-link" title="Tocar Carry On My Wayward Son">
+        📻
+    </a>
+
+    <header>
+        <h1>Men of Letters</h1>
+        <p>Banco de dados confidencial de caça — Registros e Arquivos ocultos</p>
+    </header>
+
+    <div class="container">
+        <main>
+            <article>
+                <div class="post-icon">🛡️</div>
+                <div class="post-content">
+                    <h2>Manual Prático contra Demônios da Encruzilhada</h2>
+                    <p class="artigo-meta">Por: Sam Winchester</p>
+                    <p>Contratos de encruzilhada duram exatamente 10 anos antes que os Cães do Inferno venham cobrar. Se precisar deter um demônio intermediário, utilize a armadilha do diabo pintada no teto ou embaixo do tapete para neutralizar seus poderes.</p>
+                    <div class="actions">
+                        <button data-type="like">❤️ <span>142</span></button>
+                        <button data-type="fav">⭐ <span>89</span></button>
+                    </div>
+                </div>
+            </article>
+
+            <article>
+                <div class="post-icon">🚗</div>
+                <div class="post-content">
+                    <h2>Rock Clássico: A Trilha Sonora Perfeita para o Asfalto</h2>
+                    <p class="artigo-meta">Por: Dean Winchester</p>
+                    <p>Regra número um: o motorista escolhe a música, o carona cala a boca. Se você está cruzando o país caçando coisas, Kansas, Led Zeppelin e AC/DC não são opcionais, são itens obrigatórios de sobrevivência.</p>
+                    <div class="actions">
+                        <button data-type="like">❤️ <span>305</span></button>
+                        <button data-type="fav">⭐ <span>211</span></button>
+                    </div>
+                </div>
+            </article>
+
+            <article>
+                <div class="post-icon">🪶</div>
+                <div class="post-content">
+                    <h2>Relato sobre as Emoções e Hábitos Humanos</h2>
+                    <p class="artigo-meta">Por: Castiel</p>
+                    <p>Tenho observado que os humanos passam muito tempo expressando sentimentos através de telas digitais. Acho intrigante. Também gostaria de deixar registrado que o sinal de Wi-Fi do bunker é instável.</p>
+                    <div class="actions">
+                        <button data-type="like">❤️ <span>98</span></button>
+                        <button data-type="fav">⭐ <span>45</span></button>
+                    </div>
+                </div>
+            </article>
+        </main>
+
+        <aside>
+            <div class="widget">
+                <h3>Links Úteis</h3>
+                <ul>
+                    <li>🔗 Assista na <a href="https://www.max.com/" target="_blank">HBO Max</a></li>
+                    <li>🔗 Lore Completa na <a href="https://supernatural.fandom.com/wiki/Supernatural_Wiki" target="_blank">Supernatural Wiki</a></li>
+                </ul>
+            </div>
+
+            <div class="widget">
+                <h3>Regras do Bunker</h3>
+                <ul>
+                    <li>📌 Limpar o sal das portas após o uso.</li>
+                    <li>📌 Não mexer nas fitas cassete do Dean.</li>
+                    <li>📌 Abastecer o estoque de munição.</li>
+                </ul>
+            </div>
+        </aside><!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquivo dos Homens de Letras - Supernatural Blog</title>
+    <style>
+        /* Configurações Gerais e Tema Escuro Avançado */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace, sans-serif;
+        }
+
+        body {
+            background-color: #08090c;
+            color: #d1d5db;
+            background-image: 
+                radial-gradient(circle at 20% 30%, #1a0f0f 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, #0f141c 0%, transparent 40%);
+            background-attachment: fixed;
+            padding-bottom: 60px;
+        }
+
+        /* Barra de Alerta Dinâmica */
+        .ticker-wrap {
+            background: #ff3333;
+            color: #000;
+            font-weight: bold;
+            padding: 8px 0;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 2px 15px rgba(255, 51, 51, 0.4);
+            animation: pulseAlert 2s infinite;
+        }
+
+        @keyframes pulseAlert {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Cabeçalho */
+        header {
+            background-color: #030406;
+            border-bottom: 3px double #ff3333;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "✦ ✦ ✦";
+            display: block;
+            color: #444;
+            letter-spacing: 10px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            text-shadow: 0 0 10px #ff3333, 0 0 30px #ff3333;
+            animation: neonFlicker 4s infinite alternate;
+        }
+
+        header p {
+            color: #a0aec0;
+            margin-top: 15px;
+            font-size: 1.1rem;
+            font-style: italic;
+            letter-spacing: 1px;
+        }
+
+        @keyframes neonFlicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                text-shadow: 0 0 8px #ff3333, 0 0 20px #ff3333, 0 0 40px #b30000;
+            }
+            20%, 24%, 55% {        
+                text-shadow: none;
+                color: #2d3748;
+            }
+        }
+
+        /* Layout em Grade */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 40px;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Seção de Artigos */
+        main {
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+        }
+
+        article {
+            background: linear-gradient(145deg, #11141d, #0b0d14);
+            border: 1px solid #1f2433;
+            border-radius: 12px;
+            padding: 30px;
+            display: flex;
+            gap: 25px;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        article:hover {
+            transform: translateY(-8px) scale(1.01);
+            border-color: #ff3333;
+            box-shadow: 0 15px 30px rgba(255, 51, 51, 0.15);
+        }
+
+        .post-icon {
+            width: 90px;
+            height: 90px;
+            background-color: #171b26;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            border: 2px solid #2d3748;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        article:hover .post-icon {
+            transform: rotate(-10deg) scale(1.1);
+            border-color: #ff3333;
+        }
+
+        .post-content {
+            flex-grow: 1;
+        }
+
+        h2 {
+            color: #ffffff;
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .artigo-meta {
+            font-size: 0.85rem;
+            color: #ff3333;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .post-content p {
+            color: #a0aec0;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        /* Botões Interativos */
+        .actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        button {
+            background-color: #171b26;
+            color: #cbd5e1;
+            border: 1px solid #2d3748;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #222938;
+            border-color: #4a5568;
+        }
+
+        button.active[data-type="like"] {
+            background-color: #b30000;
+            border-color: #ff3333;
+            color: #fff;
+            box-shadow: 0 0 10px rgba(255, 51, 51, 0.4);
+        }
+
+        button.active[data-type="fav"] {
+            background-color: #d69e2e;
+            border-color: #ecc94b;
+            color: #000;
+            box-shadow: 0 0 10px rgba(236, 201, 75, 0.4);
+        }
+
+        /* Barra Lateral */
+        aside {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .widget {
+            background-color: #0b0d14;
+            border: 1px solid #1f2433;
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .widget h3 {
+            color: #fff;
+            font-size: 1.2rem;
+            border-bottom: 2px solid #ff3333;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .widget ul {
+            list-style: none;
+        }
+
+        .widget ul li {
+            padding: 10px 0;
+            border-bottom: 1px dashed #1f2433;
+            font-size: 0.9rem;
+            color: #a0aec0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .widget ul li a {
+            color: #ff3333;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .widget ul li a:hover {
+            text-decoration: underline;
+        }
+
+        /* Elemento Flutuante Linkado (Impala) */
+        .impala-link {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #000;
+            border: 2px solid #ff3333;
+            color: white;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 0 20px rgba(255, 51, 51, 0.6);
+            cursor: pointer;
+            z-index: 1000;
+            text-decoration: none;
+            animation: floatVessel 4s ease-in-out infinite;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .impala-link:hover {
+            transform: scale(1.15);
+            background-color: #ff3333;
+        }
+
+        @keyframes floatVessel {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(5deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ticker-wrap">
+        ⚠️ Alerta Vermelho: Sinais de atividade de Poltergeist detectados em Lawrence, Kansas. Fiquem atentos! ⚠️
+    </div>
+
+    <a href="https://www.youtube.com/watch?v=2X_2IdYBTV0" target="_blank" class="impala-link" title="Tocar Carry On My Wayward Son">
+        📻
+    </a>
+
+    <header>
+        <h1>Men of Letters</h1>
+        <p>Banco de dados confidencial de caça — Registros e Arquivos ocultos</p>
+    </header>
+
+    <div class="container">
+        <main>
+            <article>
+                <div class="post-icon">🛡️</div>
+                <div class="post-content">
+                    <h2>Manual Prático contra Demônios da Encruzilhada</h2>
+                    <p class="artigo-meta">Por: Sam Winchester</p>
+                    <p>Contratos de encruzilhada duram exatamente 10 anos antes que os Cães do Inferno venham cobrar. Se precisar deter um demônio intermediário, utilize a armadilha do diabo pintada no teto ou embaixo do tapete para neutralizar seus poderes.</p>
+                    <div class="actions">
+                        <button data-type="like">❤️ <span>142</span></button>
+                        <button data-type="fav">⭐ <span>89</span></button>
+                    </div>
+                </div>
+            </article>
+
+            <article>
+                <div class="post-icon">🚗</div>
+                <div class="post-content">
+                    <h2>Rock Clássico: A Trilha Sonora Perfeita para o Asfalto</h2>
+                    <p class="artigo-meta">Por: Dean Winchester</p>
+                    <p>Regra número um: o motorista escolhe a música, o carona cala a boca. Se você está cruzando o país caçando coisas, Kansas, Led Zeppelin e AC/DC não são opcionais, são itens obrigatórios de sobrevivência.</p>
+                    <div class="actions">
+                        <button data-type="like">❤️ <span>305</span></button>
+                        <button data-type="fav">⭐ <span>211</span></button>
+                    </div>
+                </div>
+            </article>
+
+            <article>
+                <div class="post-icon">🪶</div>
+                <div class="post-content">
+                    <h2>Relato sobre as Emoções e Hábitos Humanos</h2>
+                    <p class="artigo-meta">Por: Castiel</p>
+                    <p>Tenho observado que os humanos passam muito tempo expressando sentimentos através de telas digitais. Acho intrigante. Também gostaria de deixar registrado que o sinal de Wi-Fi do bunker é instável.</p>
+                    <div class="actions">
+                        <button data-type="like">❤️ <span>98</span></button>
+                        <button data-type="fav">⭐ <span>45</span></button>
+                    </div>
+                </div>
+            </article>
+        </main>
+
+        <aside>
+            <div class="widget">
+                <h3>Links Úteis</h3>
+                <ul>
+                    <li>🔗 Assista na <a href="https://www.max.com/" target="_blank">HBO Max</a></li>
+                    <li>🔗 Lore Completa na <a href="https://supernatural.fandom.com/wiki/Supernatural_Wiki" target="_blank">Supernatural Wiki</a></li>
+                </ul>
+            </div>
+
+            <div class="widget">
+                <h3>Regras do Bunker</h3>
+                <ul>
+                    <li>📌 Limpar o sal das portas após o uso.</li>
+                    <li>📌 Não mexer nas fitas cassete do Dean.</li>
+                    <li>📌 Abastecer o estoque de munição.</li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        // Sistema de cliques funcionando direto no browser
+        const botoes = document.querySelectorAll("button");
+
+        botoes.forEach(function(botao) {
+            let ativo = false;
+            botao.addEventListener("click", function() {
+                let numeroSpan = botao.querySelector("span");
+                if (!ativo) {
+                    numeroSpan.textContent = parseInt(numeroSpan.textContent) + 1;
+                    botao.classList.add("active");
+                    ativo = true;
+                } else {
+                    numeroSpan.textContent = parseInt(numeroSpan.textContent) - 1;
+                    botao.classList.remove("active");
+                    ativo = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+    </div>
+
+    <script>
+        // Sistema de cliques funcionando direto no browser
+        const botoes = document.querySelectorAll("button");
+
+        botoes.forEach(function(botao) {
+            let ativo = false;
+            botao.addEventListener("click", function() {
+                let numeroSpan = botao.querySelector("span");
+                if (!ativo) {
+                    numeroSpan.textContent = parseInt(numeroSpan.textContent) + 1;
+                    botao.classList.add("active");
+                    ativo = true;
+                } else {
+                    numeroSpan.textContent = parseInt(numeroSpan.textContent) - 1;
+                    botao.classList.remove("active");
+                    ativo = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
